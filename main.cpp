@@ -12,3 +12,20 @@
  5. Время авторизации
  */
 
+#include "user.h"
+int main(){
+    User user;
+    std::ifstream ifile{"/home/user/dir/programming/C++/UserLogger/files/passwd.txt"};
+    if(!ifile.is_open()) {
+        std::cout<<"Error!!!";
+        return -1;
+    }
+    while (!ifile.eof()) {
+        ifile >> user;
+    }
+//  ifile >> user;
+
+
+    return 0;
+}
+
