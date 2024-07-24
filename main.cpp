@@ -12,18 +12,24 @@
  5. Время авторизации
  */
 
+#ifdef WIN64
+const char* filepath = "D:\\UserLogger\\files\\passwd.txt";
+#elif linux
+const char* filepath = "/home/user/dir/programming/C++/UserLogger/files/passwd.txt";
+#endif
+
 #include "user.h"
 int main(){
     User user;
-    std::ifstream ifile{"/home/user/dir/programming/C++/UserLogger/files/passwd.txt"};
+    std::ifstream ifile{filepath};
     if(!ifile.is_open()) {
         std::cout<<"Error!!!";
         return -1;
     }
-    while (!ifile.eof()) {
-        ifile >> user;
-    }
-//  ifile >> user;
+//    while (!ifile.eof()) {
+//        ifile >> user;
+//    }
+  ifile >> user;
 
 
     return 0;
