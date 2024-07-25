@@ -21,34 +21,29 @@ std::istream &operator>>(std::istream &in, User &user) {
 
         // == uid ==
         pos = Line.find(':', begin);
-        user.m_uid = stoi(Line.substr(begin, pos++), nullptr, 10);
-        begin=pos;
+        user.m_uid = stoi(Line.substr(begin, pos - begin), nullptr, 10);
+        begin = ++pos;
 
         // == gid ==
         pos = Line.find(':', begin);
-        user.m_gid = stoi(Line.substr(begin, pos++), nullptr, 10);
-        begin=pos;
+        user.m_gid = stoi(Line.substr(begin, pos-begin), nullptr, 10);
+        begin = ++pos;
 
         // == GECOS ==
         pos = Line.find(':', begin);
-        std::string gecos_str=Line.substr(begin, pos++);
+        std::string gecos_str = Line.substr(begin, pos - begin);
         user.m_gecos = GECOS(gecos_str);
-        begin=pos;
+        begin = ++pos;
 
         // == homedir_path ==
         pos = Line.find(':', begin);
-        user.m_homedir_path = Line.substr(begin, pos++);
-        begin=pos;
+        user.m_homedir_path = Line.substr(begin, pos - begin);
+        begin = ++pos;
 
         // == interpretator ==
         pos = Line.find(':', begin);
-        user.m_interpretator = Line.substr(begin, pos++), nullptr, 10;
-        begin=pos;
-
-
-
+        user.m_interpretator = Line.substr(begin, pos - begin);
     }
-
     return in;
 }
 

@@ -26,10 +26,10 @@ int main(){
         std::cout<<"Error!!!";
         return -1;
     }
-//    while (!ifile.eof()) {
-//        ifile >> user;
-//    }
-  ifile >> user;
+    while (!ifile.eof()) {
+        ifile >> user;
+    }
+
 
 
     return 0;
