@@ -7,7 +7,23 @@
  * Пример строки конфигурационного файла:
  * root:x:0:0:root,administrator,outsourcer:/root:zsh
  */
-
+/*
+std::string User::get_username() const {
+    return m_username;
+}
+unsigned short User::get_uid() const {
+    return m_uid;
+}
+unsigned short User::get_gid()  const {
+    return m_gid;
+}
+GECOS User::get_gecos() const {
+    return m_gecos;
+}
+std::string User::get_homedir_path() const {
+    return m_homedir_path;
+}
+*/
 User::User(const std::string &str){
     if (!str.empty()) {
         size_t begin = 0;
@@ -58,7 +74,7 @@ GECOS::GECOS(const std::string &gecos_str)
     size_t begin = 0;
     size_t pos = 0;
     pos = std::count(gecos_str.begin(), gecos_str.end(), ',');
-    if (pos != 3) {
+    if (pos == 0) {
         m_fullname = gecos_str;
     } else {
         //=========m_fullname==========
@@ -73,7 +89,7 @@ GECOS::GECOS(const std::string &gecos_str)
 
         //=========m_workmobile==========
         pos = gecos_str.find(',', begin);
-        m_address = gecos_str.substr(begin, pos - begin);
+        m_workmobile = gecos_str.substr(begin, pos - begin);
         begin = pos + 1;
 
         //=========m_homemobile==========
