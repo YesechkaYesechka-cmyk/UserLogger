@@ -6,7 +6,7 @@ target_include_directories(UserLogger PUBLIC include)
 
 
 find_package(GTest REQUIRED PATHS "D:\\UserLogger\\deps\\google_test\\")
-add_executable(tests_google tests/google_tests.cpp sources/user.cpp)
+add_executable(tests_google tests/google_tests.cpp sources/user.cpp sources/log_session.cpp)
 target_link_libraries(tests_google GTest::gtest_main)
 target_include_directories(tests_google PUBLIC "D:\\UserLogger\\deps\\google_test\\include" "D:\\UserLogger\\include")
 target_compile_definitions(tests_google PUBLIC BUILD_GOOGLE_TEST)

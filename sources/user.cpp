@@ -1,6 +1,4 @@
 #include "user.h"
-#include <sstream>
-#include <algorithm>
 
 /*
  * Считывает одну строку из файла и раскладывает ее содержимое по полям класса User

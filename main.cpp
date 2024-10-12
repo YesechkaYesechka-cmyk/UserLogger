@@ -19,17 +19,18 @@ const char* filepath = "/home/user/dir/programming/C++/UserLogger/files/passwd.t
 #endif
 
 #include "user.h"
-int main(){
-    User user;
-    std::ifstream ifile{filepath};
-    if(!ifile.is_open()) {
-        std::cout<<"Error!!!";
-        return -1;
-    }
-    while (!ifile.eof()) {
-        ifile >> user;
-    }
 
+#include <exception>
+int main(){
+//    User user;
+//    std::ifstream ifile{filepath};
+//    if(!ifile.is_open()) {
+//        std::cout<<"Error!!!";
+//        return -1;
+//    }
+//    while (!ifile.eof()) {
+//        ifile >> user;
+//    }
 
 
     return 0;

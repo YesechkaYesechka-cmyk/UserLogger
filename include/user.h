@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-
+#include <sstream>
 
 struct GECOS {
     std::string m_fullname;
