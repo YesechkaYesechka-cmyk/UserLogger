@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "user.h"
+#include "log_session.h"
 
 TEST(GECOS, GECOS_ctor_arg) {
     {
@@ -157,7 +158,67 @@ TEST(User, User_ctor_arg) {
     }
 }
 
+TEST(Duration, Duration_ctor_str) {
+    {
+        EXPECT_NO_THROW(Date::Duration dur("00:07"));
+        Date::Duration dur("00:07");
+        EXPECT_TRUE(dur.m_day==0);
+        EXPECT_TRUE(dur.m_hour==0);
+        EXPECT_TRUE(dur.m_minutes==7);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("(10+23:38)"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("(10+23:38"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("(10+23:3"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("(10+23:"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("(10+23"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("(10+2"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("(10+"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("(10"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("("), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("10+23:3"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("10+23:"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("10+23"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date::Duration dur("10+"), std::exception);
+    }
+    {
+        Date::Duration dur("10+23:38");
+        EXPECT_TRUE(dur.m_day==10);
+        EXPECT_TRUE(dur.m_hour==23);
+        EXPECT_TRUE(dur.m_minutes==38);
+    }
 
+}
+
+//TEST(LogSession, LOGSess_ctor_str) {
+//    {
+//        LogSession();
+//    }
+//}
 
 
 /*
