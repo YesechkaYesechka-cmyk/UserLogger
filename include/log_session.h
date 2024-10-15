@@ -3,6 +3,8 @@
 #include <fstream>
 #include <algorithm>
 
+int IsCorrectMinutes(const std::string& str);
+
 struct Date{
     std::string m_month;
     unsigned short m_day;
