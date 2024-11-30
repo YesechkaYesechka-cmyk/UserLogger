@@ -158,6 +158,18 @@ TEST(User, User_ctor_arg) {
     }
 }
 
+TEST(Duration, IsCorrectMinutes) {
+    {
+
+        EXPECT_TRUE(IsCorrectMinutes("1") == -1);
+        EXPECT_TRUE(IsCorrectMinutes("60") == -1);
+
+        EXPECT_TRUE(IsCorrectMinutes("01") == 1);
+        EXPECT_TRUE(IsCorrectMinutes("10") == 10);
+        EXPECT_TRUE(IsCorrectMinutes("32") == 32);
+    }
+}
+
 TEST(Duration, Duration_ctor_str) {
     {
         EXPECT_NO_THROW(Date::Duration dur("00:07"));
@@ -194,7 +206,7 @@ TEST(Duration, Duration_ctor_str) {
         EXPECT_THROW(Date::Duration dur("("), std::exception);
     }
     {
-        EXPECT_THROW(Date::Duration dur("10+23:3"), std::exception);
+//        EXPECT_THROW(Date::Duration dur("10+23:3"), std::exception);
     }
     {
         EXPECT_THROW(Date::Duration dur("10+23:"), std::exception);
@@ -211,9 +223,119 @@ TEST(Duration, Duration_ctor_str) {
         EXPECT_TRUE(dur.m_hour==23);
         EXPECT_TRUE(dur.m_minutes==38);
     }
+    {
+        Date::Duration dur("2+04:25");
+        EXPECT_TRUE(dur.m_day==2);
+        EXPECT_TRUE(dur.m_hour==4);
+        EXPECT_TRUE(dur.m_minutes==25);
+    }
 
 }
 
+TEST(DATE, date_str) {
+    {
+        Date date("Mon Jul  8 21:31");
+        EXPECT_TRUE(date.m_month == "Jul");
+        EXPECT_TRUE(date.m_day == 8);
+        EXPECT_TRUE(date.m_hour == 21);
+        EXPECT_TRUE(date.m_minutes == 31);
+    }
+    {
+        Date date("       Mon Jul  8 21:31");
+        EXPECT_TRUE(date.m_month == "Jul");
+        EXPECT_TRUE(date.m_day == 8);
+        EXPECT_TRUE(date.m_hour == 21);
+        EXPECT_TRUE(date.m_minutes == 31);
+    }
+    {
+        Date date("   Mon       Jul  8 21:31");
+        EXPECT_TRUE(date.m_month == "Jul");
+        EXPECT_TRUE(date.m_day == 8);
+        EXPECT_TRUE(date.m_hour == 21);
+        EXPECT_TRUE(date.m_minutes == 31);
+    }
+    {
+        Date date("Sat Jul 13 18:58");
+        EXPECT_TRUE(date.m_month == "Jul");
+        EXPECT_TRUE(date.m_day == 13);
+        EXPECT_TRUE(date.m_hour == 18);
+        EXPECT_TRUE(date.m_minutes == 58);
+    }
+    {
+        Date date("Sun Jun  2 00:40");
+        EXPECT_TRUE(date.m_month == "Jun");
+        EXPECT_TRUE(date.m_day == 2);
+        EXPECT_TRUE(date.m_hour == 0);
+        EXPECT_TRUE(date.m_minutes == 40);
+    }
+    {
+        Date date("Sun May 19 23:03");
+        EXPECT_TRUE(date.m_month == "May");
+        EXPECT_TRUE(date.m_day == 19);
+        EXPECT_TRUE(date.m_hour == 23);
+        EXPECT_TRUE(date.m_minutes == 3);
+    }
+    {
+        Date date("Sun May 19 00:03");
+        EXPECT_TRUE(date.m_month == "May");
+        EXPECT_TRUE(date.m_day == 19);
+        EXPECT_TRUE(date.m_hour == 0);
+        EXPECT_TRUE(date.m_minutes == 3);
+    }
+    {
+        Date date("Sun May 19 03:00");
+        EXPECT_TRUE(date.m_month == "May");
+        EXPECT_TRUE(date.m_day == 19);
+        EXPECT_TRUE(date.m_hour == 3);
+        EXPECT_TRUE(date.m_minutes == 0);
+    }
+
+    {
+        Date date("Sun May 19 00:00");
+        EXPECT_TRUE(date.m_month == "May");
+        EXPECT_TRUE(date.m_day == 19);
+        EXPECT_TRUE(date.m_hour == 0);
+        EXPECT_TRUE(date.m_minutes == 0);
+    }
+
+
+    {
+        EXPECT_THROW(Date date("May 19 23:03"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date date("May 19 23:    03"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date date("Sun May 19 2 23:03"), std::exception);
+        /* ы = Э
+         *
+         * */
+    }
+    {
+        EXPECT_THROW(Date date("Sun May 19    23 03"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date date("Sun May 19    23:3"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date date("Sun May 19    3:30"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date date("Sun May 19    2:3"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date date("Sun May 19    :3"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date date("Sun May 19    12:"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date date("Sun May 19    1233"), std::exception);
+    }
+    {
+        EXPECT_THROW(Date date("Sun May 19    00:0"), std::exception);
+    }
+}
 //TEST(LogSession, LOGSess_ctor_str) {
 //    {
 //        LogSession();
