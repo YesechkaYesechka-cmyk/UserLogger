@@ -160,7 +160,6 @@ TEST(User, User_ctor_arg) {
 
 TEST(Duration, IsCorrectMinutes) {
     {
-
         EXPECT_TRUE(IsCorrectMinutes("1") == -1);
         EXPECT_TRUE(IsCorrectMinutes("60") == -1);
 
@@ -206,7 +205,7 @@ TEST(Duration, Duration_ctor_str) {
         EXPECT_THROW(Date::Duration dur("("), std::exception);
     }
     {
-//        EXPECT_THROW(Date::Duration dur("10+23:3"), std::exception);
+        EXPECT_THROW(Date::Duration dur("10+23:3"), std::exception);
     }
     {
         EXPECT_THROW(Date::Duration dur("10+23:"), std::exception);
@@ -298,7 +297,6 @@ TEST(DATE, date_str) {
         EXPECT_TRUE(date.m_minutes == 0);
     }
 
-
     {
         EXPECT_THROW(Date date("May 19 23:03"), std::exception);
     }
@@ -307,9 +305,6 @@ TEST(DATE, date_str) {
     }
     {
         EXPECT_THROW(Date date("Sun May 19 2 23:03"), std::exception);
-        /* ы = Э
-         *
-         * */
     }
     {
         EXPECT_THROW(Date date("Sun May 19    23 03"), std::exception);
@@ -336,30 +331,3 @@ TEST(DATE, date_str) {
         EXPECT_THROW(Date date("Sun May 19    00:0"), std::exception);
     }
 }
-//TEST(LogSession, LOGSess_ctor_str) {
-//    {
-//        LogSession();
-//    }
-//}
-
-
-/*
-class TestUserAccess : public ::testing::Test {
-protected:
-    User user;
-
-    void SetUp() override {
-        user = User("root:x:0:0:root:/root:zsh");
-    }
-};
-
-TEST_F(TestUserAccess, AccessPrivateFields) {
-    //  объект user создан, и мы можем проверить его поля
-    EXPECT_EQ(user.m_username, "root");
-    EXPECT_EQ(user.m_uid, 0);
-    EXPECT_EQ(user.m_gid, 0);
-    EXPECT_EQ(user.m_gecos.m_fullname, "root");
-    EXPECT_EQ(user.m_homedir_path, "/root");
-    EXPECT_EQ(user.m_interpretator, "zsh");
-}
-*/
