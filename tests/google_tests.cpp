@@ -297,11 +297,19 @@ TEST(DATE, date_str) {
         EXPECT_TRUE(date.m_hour == 0);
         EXPECT_TRUE(date.m_minutes == 0);
     }
+
+
     {
         EXPECT_THROW(Date date("May 19 23:03"), std::exception);
     }
     {
+        EXPECT_THROW(Date date("May 19 23:    03"), std::exception);
+    }
+    {
         EXPECT_THROW(Date date("Sun May 19 2 23:03"), std::exception);
+        /* ы = Э
+         *
+         * */
     }
     {
         EXPECT_THROW(Date date("Sun May 19    23 03"), std::exception);
