@@ -65,4 +65,40 @@ LogSession::LogSession(const std::string &str)
     }
     ss >> m_tty_name;
     ss >> m_hostname;
+
+    std::string date_time_str;
+    std::getline(ss, date_time_str);
+    size_t first_non_space = date_time_str.find_first_not_of(" \t");
+    if (first_non_space != std::string::npos) {
+        date_time_str = date_time_str.substr(first_non_space);
+    }
+    size_t duration_start = date_time_str.find_last_of('(');
+    std::string duration_str;
+    if (duration_start != std::string::npos) {
+        duration_str = date_time_str.substr(duration_start + 1, date_time_str.find(')') - duration_start - 1);
+        date_time_str = date_time_str.substr(0, duration_start - 1);
+    }
+
+    m_date_params = Date(date_time_str);
+    if (!duration_str.empty()) {
+        m_date_params.duration = Date::Duration(duration_str);
+    }
+
+}
+
+
+const std::string& LogSession::getUsername() const {
+    return m_username;
+}
+
+const std::string& LogSession::getTtyName() const {
+    return m_tty_name;
+}
+
+const std::string& LogSession::getHostname() const {
+    return m_hostname;
+}
+
+const Date& LogSession::getDateParams() const {
+    return m_date_params;
 }

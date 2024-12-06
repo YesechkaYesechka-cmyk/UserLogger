@@ -331,3 +331,20 @@ TEST(DATE, date_str) {
         EXPECT_THROW(Date date("Sun May 19    00:0"), std::exception);
     }
 }
+
+
+TEST(LogSessionTests, ValidLogSessionStrings) {
+    // Тест с корректной строкой
+    {
+        LogSession session("user     pts/2        192.168.0.8      Sat Jul 13 19:19 - 19:19  (00:00)");
+        EXPECT_TRUE(session.getUsername() == "user");
+        EXPECT_TRUE(session.getTtyName() == "pts/2");
+        EXPECT_TRUE(session.getHostname() == "192.168.0.8");
+        EXPECT_TRUE(session.getDateParams().m_month == "Jul");
+        EXPECT_TRUE(session.getDateParams().m_day == 13);
+        EXPECT_TRUE(session.getDateParams().m_hour == 19);
+        EXPECT_TRUE(session.getDateParams().m_minutes == 19);
+        EXPECT_TRUE(session.getDateParams().duration.m_hour == 0);
+        EXPECT_TRUE(session.getDateParams().duration.m_minutes == 0);
+    }
+}

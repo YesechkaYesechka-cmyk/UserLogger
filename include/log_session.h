@@ -32,4 +32,9 @@ private:
 public:
     LogSession(const std::string &str);
 
+
+    const std::string& getUsername() const;
+    const std::string& getTtyName() const;
+    const std::string& getHostname() const;
+    const Date& getDateParams() const;
 };
