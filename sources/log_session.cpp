@@ -39,29 +39,15 @@ Date::Duration::Duration(const std::string &str)
             throw std::exception();
     } else {  // если минуты присутствуют в записи Duration
         int minutes = IsCorrectMinutes(minutes_str);
-        if (minutes == -1) std::exception();
+        if (minutes == -1) throw std::exception();
         m_minutes = minutes;
     }
-
-//    auto begin = str.begin();
-//    if (auto pos = find(begin, str.end(), '+'); pos != str.end()) {
-//        std::string day{str.begin(), pos};
-//        m_day = std::strtol(day.data(), nullptr, 10);
-//        begin = ++pos;
-//    }
-////    std::string hour{begin,begin+2};
-////    m_hour = std::strtol(hour.data(), nullptr, 10);
-////    std::string minute{begin+3,begin+5};
-////    m_minutes = std::strtol(minute.data(), nullptr, 10);
-//
-//    std::string h_m{begin, str.end()};
-//    sscanf(h_m.data(), "%hd:%hd", &m_hour, &m_minutes);
 }
 
 int IsCorrectMinutes(const std::string &str) {
     if (str.size() != 2) return -1;
     int minutes = std::stoi(str);
-    if (minutes >= 0 && minutes <= 59)return minutes;
+    if (minutes >= 0 && minutes <= 59) return minutes;
     else return -1;
 }
 
@@ -79,5 +65,4 @@ LogSession::LogSession(const std::string &str)
     }
     ss >> m_tty_name;
     ss >> m_hostname;
-
 }
