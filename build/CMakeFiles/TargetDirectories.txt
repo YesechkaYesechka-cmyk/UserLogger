@@ -1,0 +1,4 @@
+D:/UserLogger/build/CMakeFiles/UserLogger.dir
+D:/UserLogger/build/CMakeFiles/tests_google.dir
+D:/UserLogger/build/CMakeFiles/ALL_BUILD.dir
+D:/UserLogger/build/CMakeFiles/ZERO_CHECK.dir

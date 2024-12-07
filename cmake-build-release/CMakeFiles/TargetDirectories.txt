@@ -1,0 +1,4 @@
+D:/UserLogger/cmake-build-release/CMakeFiles/UserLogger.dir
+D:/UserLogger/cmake-build-release/CMakeFiles/tests_google.dir
+D:/UserLogger/cmake-build-release/CMakeFiles/edit_cache.dir
+D:/UserLogger/cmake-build-release/CMakeFiles/rebuild_cache.dir
