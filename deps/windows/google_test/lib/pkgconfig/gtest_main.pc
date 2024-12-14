@@ -1,5 +1,5 @@
-libdir=D:/UserLogger/deps/googletest-1.15.2/OUT/lib
-includedir=D:/UserLogger/deps/googletest-1.15.2/OUT/include
+libdir=D:/UserLogger/GT/googletest-1.15.2/build/OUT/lib
+includedir=D:/UserLogger/GT/googletest-1.15.2/build/OUT/include
 
 Name: gtest_main
 Description: GoogleTest (with main() function)
