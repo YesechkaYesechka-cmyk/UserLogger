@@ -20,6 +20,8 @@ struct Date{
     Date(const std::string &str, const Duration& duration = Duration{});
     Date()=default;
 };
+std::ostream &operator<<(std::ostream &out, const Date &date);
+std::ostream &operator<<(std::ostream &out, const Date::Duration &duration);
 
 class LogSession{
 #ifdef BUILD_GOOGLE_TEST
@@ -34,5 +36,8 @@ private:
 
 public:
     LogSession(const std::string &str);
+    LogSession()=default;
+    friend std::istream &operator>>(std::istream &in, LogSession &log_session);
+    friend std::ostream &operator<<(std::ostream &out, const LogSession &log_session);
 
 };

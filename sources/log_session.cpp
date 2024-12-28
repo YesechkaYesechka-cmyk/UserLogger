@@ -4,9 +4,8 @@
 /*
  * note: Поле duration
  */
-Date::Date(const std::string &str, const Duration& duration)
-: m_duration{duration}
-{
+Date::Date(const std::string &str, const Duration &duration)
+        : m_duration{duration} {
     std::string custom_str{str};
     int i = 0;
     while (std::isspace(custom_str[i])) i++;
@@ -18,7 +17,7 @@ Date::Date(const std::string &str, const Duration& duration)
     if (ret == 4) {
         m_month = std::string(mon_str);
         size_t time_pos = custom_str.find(':');
-        if (time_pos != (std::string::npos && time_pos >= 3) ){
+        if (time_pos != (std::string::npos && time_pos >= 3)) {
             std::string time_str = custom_str.substr(time_pos - 2, 5);
             if (time_str.size() == 5 && time_str[2] == ':' && std::isdigit(time_str[0]) &&
                 std::isdigit(time_str[1]) && std::isdigit(time_str[3]) && std::isdigit(time_str[4])) {
@@ -65,8 +64,7 @@ LogSession::LogSession(const std::string &str)
         std::string tmp;
         ss >> tmp;
         m_tty_name += tmp;
-    }
-    else {ss >> m_tty_name;}
+    } else { ss >> m_tty_name; }
 
     std::string word;
     while (ss >> word) {
@@ -80,7 +78,6 @@ LogSession::LogSession(const std::string &str)
     }
 
 
-//todo сделать для третьего стобца (заглавная буква) месяце
     std::string date_time_str = word;
     std::getline(ss, word);
     date_time_str += word;
@@ -103,4 +100,28 @@ LogSession::LogSession(const std::string &str)
     if (!duration_str.empty()) {
         m_date.m_duration = Date::Duration(duration_str);
     }
+}
+
+std::istream &operator>>(std::istream &in, LogSession &log_session) {
+    std::string Line;
+    std::getline(in, Line);
+    log_session = LogSession(Line);
+    return in;
+}
+
+std::ostream &operator<<(std::ostream &out, const LogSession &log_session) {
+    out << log_session.m_username << '\t' << log_session.m_tty_name << '\t' << log_session.m_hostname << '\t'
+        << log_session.m_date << std::endl;
+    return out;
+}
+
+std::ostream &operator<<(std::ostream &out, const Date &date) {
+    out << date.m_month << '\t' << date.m_day << '\t' << date.m_hour << '\t' << date.m_minutes << '\t'
+        << date.m_duration;
+    return out;
+}
+
+std::ostream &operator<<(std::ostream &out, const Date::Duration &duration) {
+    out << duration.m_day << '\t' << duration.m_hour << '\t' << duration.m_minutes;
+    return out;
 }

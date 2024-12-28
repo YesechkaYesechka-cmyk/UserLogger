@@ -1,28 +1,6 @@
 #include "user.h"
 
-/*
- * Считывает одну строку из файла и раскладывает ее содержимое по полям класса User
- * Пример строки конфигурационного файла:
- * root:x:0:0:root,administrator,outsourcer:/root:zsh
- */
-/*
-std::string User::get_username() const {
-    return m_username;
-}
-unsigned short User::get_uid() const {
-    return m_uid;
-}
-unsigned short User::get_gid()  const {
-    return m_gid;
-}
-GECOS User::get_gecos() const {
-    return m_gecos;
-}
-std::string User::get_homedir_path() const {
-    return m_homedir_path;
-}
-*/
-User::User(const std::string &str){
+User::User(const std::string &str) {
     if (!str.empty()) {
         size_t begin = 0;
         size_t pos = 0;
@@ -39,7 +17,7 @@ User::User(const std::string &str){
 
         // == gid ==
         pos = str.find(':', begin);
-        this->m_gid = stoi(str.substr(begin, pos-begin), nullptr, 10);
+        this->m_gid = stoi(str.substr(begin, pos - begin), nullptr, 10);
         begin = ++pos;
 
         // == GECOS ==
@@ -59,6 +37,12 @@ User::User(const std::string &str){
     }
 }
 
+std::ostream &operator<<(std::ostream &out, const User &user) {
+    out << user.m_username << '\t' << user.m_uid << '\t' << user.m_gid << '\t' << user.m_gecos << '\t'
+        << user.m_homedir_path << '\t' << user.m_interpretator << std::endl;
+    return out;
+}
+
 std::istream &operator>>(std::istream &in, User &user) {
     std::string Line;
     std::getline(in, Line);
@@ -67,8 +51,7 @@ std::istream &operator>>(std::istream &in, User &user) {
 }
 
 GECOS::GECOS(const std::string &gecos_str)
-        : m_fullname(), m_address(), m_workmobile(), m_homemobile()
-{
+        : m_fullname(), m_address(), m_workmobile(), m_homemobile() {
     size_t begin = 0;
     size_t pos = 0;
     pos = std::count(gecos_str.begin(), gecos_str.end(), ',');
@@ -96,9 +79,7 @@ GECOS::GECOS(const std::string &gecos_str)
     }
 }
 
-/*
-2. Альтернатива sscanf()
-3. Как считать m_gecos при sscanf и альтернативах
-4. Зарегистрироваться на ГИТ
-5. Поставить rustdesk
- */
+std::ostream &operator<<(std::ostream &out, const GECOS &gecos) {
+    out << gecos.m_fullname << gecos.m_address << gecos.m_workmobile << gecos.m_homemobile;
+    return out;
+}
