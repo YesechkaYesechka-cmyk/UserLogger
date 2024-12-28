@@ -16,25 +16,23 @@ struct Date{
         unsigned short m_minutes;
         Duration(const std::string &str);
         Duration()=default;
-    } duration;
-    Date(const std::string &str);
+    } m_duration;
+    Date(const std::string &str, const Duration& duration = Duration{});
     Date()=default;
-
 };
 
 class LogSession{
+#ifdef BUILD_GOOGLE_TEST
+public:
+#else
 private:
+#endif
     std::string m_username;
     std::string m_tty_name;
     std::string m_hostname;
-    Date m_date_params;
+    Date m_date;
 
 public:
     LogSession(const std::string &str);
 
-
-    const std::string& getUsername() const;
-    const std::string& getTtyName() const;
-    const std::string& getHostname() const;
-    const Date& getDateParams() const;
 };

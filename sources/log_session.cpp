@@ -1,14 +1,17 @@
 #include "log_session.h"
 #include <sstream>
 
-
-Date::Date(const std::string &str) {
+/*
+ * note: Поле duration
+ */
+Date::Date(const std::string &str, const Duration& duration)
+: m_duration{duration}
+{
     std::string custom_str{str};
     int i = 0;
     while (std::isspace(custom_str[i])) i++;
     custom_str = custom_str.substr(i, custom_str.size() - i);
     size_t idx_spase = custom_str.find_first_of(" \t");
-    // todo: удалить первые символы или взять подстроку от первого пробела
     custom_str = custom_str.substr(idx_spase + 1);
     char mon_str[64];
     int ret = sscanf(custom_str.data(), "%s %hu %hu:%hu", mon_str, &m_day, &m_hour, &m_minutes);
@@ -52,53 +55,52 @@ int IsCorrectMinutes(const std::string &str) {
 }
 
 LogSession::LogSession(const std::string &str)
-        : m_username(), m_tty_name(), m_hostname(), m_date_params() {
+        : m_username(), m_tty_name(), m_hostname(), m_date() {
     std::stringstream ss(str);
     ss >> m_username;
+
     if (m_username == "reboot") {
         ss >> m_tty_name;
         m_tty_name += " ";
         std::string tmp;
         ss >> tmp;
         m_tty_name += tmp;
-        // ...
     }
-    ss >> m_tty_name;
-    ss >> m_hostname;
+    else {ss >> m_tty_name;}
 
-    std::string date_time_str;
-    std::getline(ss, date_time_str);
+    std::string word;
+    while (ss >> word) {
+        if (std::isupper(word[0])) {
+            break;
+        }
+        if (!m_hostname.empty()) {
+            m_hostname += " ";
+        }
+        m_hostname += word;
+    }
+
+
+//todo сделать для третьего стобца (заглавная буква) месяце
+    std::string date_time_str = word;
+    std::getline(ss, word);
+    date_time_str += word;
+
+
     size_t first_non_space = date_time_str.find_first_not_of(" \t");
     if (first_non_space != std::string::npos) {
         date_time_str = date_time_str.substr(first_non_space);
     }
+
+
     size_t duration_start = date_time_str.find_last_of('(');
     std::string duration_str;
     if (duration_start != std::string::npos) {
         duration_str = date_time_str.substr(duration_start + 1, date_time_str.find(')') - duration_start - 1);
+
         date_time_str = date_time_str.substr(0, duration_start - 1);
     }
-
-    m_date_params = Date(date_time_str);
+    m_date = Date(date_time_str);
     if (!duration_str.empty()) {
-        m_date_params.duration = Date::Duration(duration_str);
+        m_date.m_duration = Date::Duration(duration_str);
     }
-
-}
-
-
-const std::string& LogSession::getUsername() const {
-    return m_username;
-}
-
-const std::string& LogSession::getTtyName() const {
-    return m_tty_name;
-}
-
-const std::string& LogSession::getHostname() const {
-    return m_hostname;
-}
-
-const Date& LogSession::getDateParams() const {
-    return m_date_params;
 }

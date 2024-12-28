@@ -296,6 +296,20 @@ TEST(DATE, date_str) {
         EXPECT_TRUE(date.m_hour == 0);
         EXPECT_TRUE(date.m_minutes == 0);
     }
+    {
+        Date date("         Thu Jun 27 09:46 - 22:54 (10+13:08)");
+        EXPECT_TRUE(date.m_month == "Jun");
+        EXPECT_TRUE(date.m_day == 27);
+        EXPECT_TRUE(date.m_hour == 9);
+        EXPECT_TRUE(date.m_minutes == 46);
+    }
+    {
+        Date date("     Sat Jul 13 18:08   still logged in");
+        EXPECT_TRUE(date.m_month == "Jul");
+        EXPECT_TRUE(date.m_day == 13);
+        EXPECT_TRUE(date.m_hour == 18);
+        EXPECT_TRUE(date.m_minutes == 8);
+    }
 
     {
         EXPECT_THROW(Date date("May 19 23:03"), std::exception);
@@ -335,16 +349,111 @@ TEST(DATE, date_str) {
 
 TEST(LogSessionTests, ValidLogSessionStrings) {
     // Тест с корректной строкой
-    {
+   {
         LogSession session("user     pts/2        192.168.0.8      Sat Jul 13 19:19 - 19:19  (00:00)");
-        EXPECT_TRUE(session.getUsername() == "user");
-        EXPECT_TRUE(session.getTtyName() == "pts/2");
-        EXPECT_TRUE(session.getHostname() == "192.168.0.8");
-        EXPECT_TRUE(session.getDateParams().m_month == "Jul");
-        EXPECT_TRUE(session.getDateParams().m_day == 13);
-        EXPECT_TRUE(session.getDateParams().m_hour == 19);
-        EXPECT_TRUE(session.getDateParams().m_minutes == 19);
-        EXPECT_TRUE(session.getDateParams().duration.m_hour == 0);
-        EXPECT_TRUE(session.getDateParams().duration.m_minutes == 0);
+        EXPECT_TRUE(session.m_username == "user");
+        EXPECT_TRUE(session.m_tty_name == "pts/2");
+        EXPECT_TRUE(session.m_hostname == "192.168.0.8");
+        EXPECT_TRUE(session.m_date.m_month == "Jul");
+        EXPECT_TRUE(session.m_date.m_day == 13);
+        EXPECT_TRUE(session.m_date.m_hour == 19);
+        EXPECT_TRUE(session.m_date.m_minutes == 19);
+        EXPECT_TRUE(session.m_date.m_duration.m_hour == 0);
+        EXPECT_TRUE(session.m_date.m_duration.m_minutes == 0);
     }
+//    {
+//        LogSession session("confident tty2         tty2             Wed Jun 26 23:15 - 22:53 (10+23:38)");
+//        EXPECT_TRUE(session.m_username == "confident");
+//        EXPECT_TRUE(session.m_tty_name == "tty2");
+//        EXPECT_TRUE(session.m_hostname == "tty2");
+//        EXPECT_TRUE(session.m_date.m_month == "Jun");
+//        EXPECT_TRUE(session.m_date.m_day == 26);
+//        EXPECT_TRUE(session.m_date.m_hour == 23);
+//        EXPECT_TRUE(session.m_date.m_minutes == 15);
+//        EXPECT_TRUE(session.m_date.m_duration.m_day == 10);
+//        EXPECT_TRUE(session.m_date.m_duration.m_hour == 23);
+//        EXPECT_TRUE(session.m_date.m_duration.m_minutes == 38);
+//    }
+    {
+        LogSession session("clinic_88 seat0        login screen     Thu Jun 27 09:46 - 22:54 (10+13:08)");
+        EXPECT_TRUE(session.m_username == "clinic_88");
+        EXPECT_TRUE(session.m_tty_name == "seat0");
+        EXPECT_TRUE(session.m_hostname == "login screen");
+        EXPECT_TRUE(session.m_date.m_month == "Jun");
+        EXPECT_TRUE(session.m_date.m_day == 27);
+        EXPECT_TRUE(session.m_date.m_hour == 9);
+        EXPECT_TRUE(session.m_date.m_minutes == 46);
+        EXPECT_TRUE(session.m_date.m_duration.m_day == 10);
+        EXPECT_TRUE(session.m_date.m_duration.m_hour == 13);
+        EXPECT_TRUE(session.m_date.m_duration.m_minutes == 8);
+    }
+//    {
+//        LogSession session("clinic_88 tty4         tty4             Thu Jun 27 09:46 - down  (16+09:11)");
+//        EXPECT_TRUE(session.m_username == "clinic_88");
+//        EXPECT_TRUE(session.m_tty_name == "tty4");
+//        EXPECT_TRUE(session.m_hostname == "tty4");
+//        EXPECT_TRUE(session.m_date.m_month == "Jun");
+//        EXPECT_TRUE(session.m_date.m_day == 27);
+//        EXPECT_TRUE(session.m_date.m_hour == 9);
+//        EXPECT_TRUE(session.m_date.m_minutes == 46);
+//        EXPECT_TRUE(session.m_date.m_duration.m_day == 16);
+//        EXPECT_TRUE(session.m_date.m_duration.m_hour == 9);
+//        EXPECT_TRUE(session.m_date.m_duration.m_minutes == 11);
+//    }
+    {
+        LogSession session("reboot   system boot  6.8.0-35-generic Wed Jun 19 18:05 - 22:48 (7+04:42)");
+        EXPECT_TRUE(session.m_username == "reboot");
+        EXPECT_TRUE(session.m_tty_name == "system boot");
+        EXPECT_TRUE(session.m_hostname == "6.8.0-35-generic");
+        EXPECT_TRUE(session.m_date.m_month == "Jun");
+        EXPECT_TRUE(session.m_date.m_day == 19);
+        EXPECT_TRUE(session.m_date.m_hour == 18);
+        EXPECT_TRUE(session.m_date.m_minutes == 5);
+        EXPECT_TRUE(session.m_date.m_duration.m_day == 7);
+        EXPECT_TRUE(session.m_date.m_duration.m_hour == 4);
+        EXPECT_TRUE(session.m_date.m_duration.m_minutes == 42);
+    }
+}
+
+TEST(LogSessionTests, WithoutDuration) {
+    /*
+    {
+          LogSession session("reboot   system boot  6.8.0-38-generic Sat Jul 13 18:58   still running");
+          EXPECT_TRUE(session.m_username == "reboot");
+          EXPECT_TRUE(session.m_tty_name == "system boot");
+          EXPECT_TRUE(session.m_hostname == "6.8.0-38-generic");
+          EXPECT_TRUE(session.m_date.m_month == "Jul");
+          EXPECT_TRUE(session.m_date.m_day == 13);
+          EXPECT_TRUE(session.m_date.m_hour == 18);
+          EXPECT_TRUE(session.m_date.m_minutes == 58);
+          EXPECT_TRUE(session.m_date.m_duration.m_day == 0);
+          EXPECT_TRUE(session.m_date.m_duration.m_hour == 0);
+          EXPECT_TRUE(session.m_date.m_duration.m_minutes == 0);
+    }
+    {
+          LogSession session("user     :0           :0               Sat Jul 13 18:58   still logged in");
+          EXPECT_TRUE(session.m_username == "user");
+          EXPECT_TRUE(session.m_tty_name == ":0");
+          EXPECT_TRUE(session.m_hostname == ":0");
+          EXPECT_TRUE(session.m_date.m_month == "Jul");
+          EXPECT_TRUE(session.m_date.m_day == 13);
+          EXPECT_TRUE(session.m_date.m_hour == 18);
+          EXPECT_TRUE(session.m_date.m_minutes == 58);
+          EXPECT_TRUE(session.m_date.m_duration.m_day == 0);
+          EXPECT_TRUE(session.m_date.m_duration.m_hour == 0);
+          EXPECT_TRUE(session.m_date.m_duration.m_minutes == 0);
+      }
+      {
+          LogSession session("user     seat0        login screen     Sat Jul 13 18:58   still logged in");
+          EXPECT_TRUE(session.m_username == "user");
+          EXPECT_TRUE(session.m_tty_name == "seat0");
+          EXPECT_TRUE(session.m_hostname == "login screen");
+          EXPECT_TRUE(session.m_date.m_month == "Jul");
+          EXPECT_TRUE(session.m_date.m_day == 13);
+          EXPECT_TRUE(session.m_date.m_hour == 18);
+          EXPECT_TRUE(session.m_date.m_minutes == 58);
+          EXPECT_TRUE(session.m_date.m_duration.m_day == 0);
+          EXPECT_TRUE(session.m_date.m_duration.m_hour == 0);
+          EXPECT_TRUE(session.m_date.m_duration.m_minutes == 0);
+      }*/
 }
