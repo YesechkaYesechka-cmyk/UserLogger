@@ -6,6 +6,7 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 list(APPEND UserLogger_SOURCES
         sources/user.cpp
         sources/log_session.cpp
+        sources/storage.cpp
         )
 
 list(APPEND UserLogger_HEADERS
