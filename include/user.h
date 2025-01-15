@@ -14,14 +14,17 @@ struct GECOS {
     GECOS() = default;
     GECOS(const std::string &gecos_str);
 
+    GECOS(const GECOS& other) = default;
+    GECOS& operator=(const GECOS& other) = default;
 };
+
 std::ostream &operator<<(std::ostream &out, const GECOS &gecos);
 
 class User {
 #ifdef BUILD_GOOGLE_TEST
 public:
 #else
-private:
+    private:
 #endif
     std::string m_username;
     unsigned short m_uid{};
@@ -30,9 +33,15 @@ private:
     std::string m_homedir_path;
     std::string m_interpretator;
 public:
-    User()=default;
+    User() = default;
+
     User(const std::string &str);
+
+    User(const User &other) = default;
+    User &operator=(const User &other) = default;
+
     friend std::istream &operator>>(std::istream &in, User &user);
+
     friend std::ostream &operator<<(std::ostream &out, const User &user);
 };
 

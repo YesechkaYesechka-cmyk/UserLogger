@@ -1,6 +1,8 @@
 #include "storage.h"
 
-/*
-    std::map<std::string, std::pair<User, std::set<LogSession, decltype(comp)>>> storage;
-    cout << storage['root'].second;
-*/
+Storage::UserAndItsSessions::UserAndItsSessions(const User &user,
+                                                const Storage::UserAndItsSessions::session_set_t &sessions)
+    : m_user(user), m_sessions(sessions)
+{}
+
+

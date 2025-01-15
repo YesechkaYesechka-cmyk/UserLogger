@@ -7,6 +7,7 @@ list(APPEND UserLogger_SOURCES
         sources/user.cpp
         sources/log_session.cpp
         sources/storage.cpp
+        sources/utils.cpp
         )
 
 list(APPEND UserLogger_HEADERS
@@ -29,7 +30,7 @@ if(WIN32)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 
-add_executable(tests_google tests/google_tests.cpp ${UserLogger_SOURCES})
+add_executable(tests_google tests/google_tests.cpp tests/test_storage.cpp ${UserLogger_SOURCES})
 target_include_directories(tests_google PUBLIC ${UserLogger_HEADERS})
 target_link_libraries(tests_google gtest gtest_main)
 target_compile_definitions(tests_google PUBLIC BUILD_GOOGLE_TEST)
