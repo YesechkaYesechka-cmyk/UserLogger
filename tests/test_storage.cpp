@@ -92,3 +92,28 @@ TEST(DateComparatorTests, EqualDates) {
     EXPECT_FALSE(date2 < date1);
 }
 
+//TEST(Storage, InsertUser) {
+//    User user1{}, user2;
+//    Storage storage{};
+//    EXPECT_TRUE(storage.InsertUser(user1));
+//    EXPECT_FALSE(storage.InsertUser(user1));
+//    EXPECT_TRUE(storage.InsertUser(user2));
+//    EXPECT_EQ(storage.Size(), 2);
+//}
+
+TEST(StorageTests, InsertSession_Success) {
+    Storage storage;
+    User user("username:1000:1000:John Doe:Some Address:1234567890:1234567890:/home/johndoe:/bin/bash");
+    EXPECT_TRUE(storage.InsertUser(user));
+    LogSession session1("username tty1 192.168.1.1 Mon Jun  2 21:31");
+    EXPECT_TRUE(storage.InsertSession(user.m_username, session1));
+    EXPECT_TRUE(storage.m_storage.size() == 1);
+    EXPECT_TRUE(storage.m_storage["username"].m_user.m_username == "username");
+    EXPECT_TRUE(storage.m_storage["username"].m_sessions.size() == 1);
+    EXPECT_FALSE(storage.InsertSession("username", session1));
+    LogSession session2("username tty2 192.168.1.2 Mon Jun  2 22:15");
+    EXPECT_TRUE(storage.InsertSession("username", session2));
+    EXPECT_TRUE(storage.m_storage.size() == 1);
+    EXPECT_TRUE(storage.m_storage["username"].m_user.m_username == "username");
+    EXPECT_TRUE(storage.m_storage["username"].m_sessions.size() == 2);
+}
